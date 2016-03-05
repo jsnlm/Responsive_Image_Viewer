@@ -1,32 +1,61 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
-/**
- * Created by j on 2016-03-05.
- */
 public class Toolbar extends JPanel implements Observer {
 
     ImageCollectionModel model;
-    JRadioButton listButton;
-    JRadioButton gridButton;
-
+    JButton listButton;
+    JButton gridButton;
+    JLabel title;
+    ToolbarFilter filter;
     public Toolbar(ImageCollectionModel m) {
-        this.model = m;
-        //super();
-        listButton = new JRadioButton(new ImageIcon(getClass().getResource("listIcon.png")));
-        gridButton = new JRadioButton(new ImageIcon(getClass().getResource("gridIcon.png")));
+        super();
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-        ButtonGroup layoutBG = new ButtonGroup();
-        layoutBG.add(listButton);
-        layoutBG.add(gridButton);
+        this.model = m;
+        listButton = new JButton(new ImageIcon(getClass().getResource("listIcon.png")));
+        listButton.setDisabledIcon(new ImageIcon(getClass().getResource("listIconDisabled.png")));
+        gridButton = new JButton(new ImageIcon(getClass().getResource("gridIcon.png")));
+        gridButton.setDisabledIcon(new ImageIcon(getClass().getResource("gridIconDisabled.png")));
+        title = new JLabel("Fotag!");
+
+        filter = new ToolbarFilter(this.model);
+        model.addObserver(filter);
 
         this.add(listButton);
         this.add(gridButton);
+        this.add(title);
+        this.add(Box.createHorizontalGlue());
+        this.add(filter);
+
+
+        listButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.setLayout(ImageCollectionModel.LayoutType.LIST);
+            }
+        });
+        gridButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.setLayout(ImageCollectionModel.LayoutType.GRID);
+            }
+        });
     }
 
     @Override
     public void update(Observable o, Object arg) {
-
+        if (model.getLayout() == ImageCollectionModel.LayoutType.GRID){
+            listButton.setEnabled(true);
+            gridButton.setEnabled(false);
+        }
+        else{
+            listButton.setEnabled(false);
+            gridButton.setEnabled(true);
+        }
     }
 }

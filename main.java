@@ -1,16 +1,15 @@
-/**
- * Created by j on 2016-03-04.
- */
-public class main {
+public class Main {
     public static void main(String[] args){
-        System.out.println("ageh");
 
         ImageCollectionModel theModel = new ImageCollectionModel();
         Toolbar toolbar = new Toolbar(theModel);
         MainFrame frame =  new MainFrame(theModel, toolbar);
         ImageCollectionView mainPanel =  new ImageCollectionView(theModel);
 
+        theModel.addObserver(toolbar);
         theModel.addObserver(frame);
         theModel.addObserver(mainPanel);
+
+        theModel.notifyObservers();
     }
 }
