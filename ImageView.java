@@ -2,10 +2,10 @@ import javax.swing.*;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ImageCollectionView extends JPanel implements Observer {
+public class ImageView extends JPanel implements Observer {
 
-    ImageCollectionModel model;
-    public ImageCollectionView(ImageCollectionModel m){
+    ImageModel model;
+    public ImageView(ImageModel m) {
         this.model = m;
     }
 

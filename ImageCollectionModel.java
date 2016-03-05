@@ -1,9 +1,11 @@
-/**
- * Created by j on 2016-03-04.
- */
-public class ImageCollectionModel {
+import java.util.Observable;
 
+public class ImageCollectionModel extends Observable {
 
+    public enum LayoutType{ LIST, GRID }
+
+    LayoutType currLayout;
     public ImageCollectionModel(){
+        currLayout = LayoutType.LIST;
     }
 }

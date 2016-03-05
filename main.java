@@ -6,6 +6,11 @@ public class main {
         System.out.println("ageh");
 
         ImageCollectionModel theModel = new ImageCollectionModel();
-        MainFrame frame =  new MainFrame(theModel);
+        Toolbar toolbar = new Toolbar(theModel);
+        MainFrame frame =  new MainFrame(theModel, toolbar);
+        ImageCollectionView mainPanel =  new ImageCollectionView(theModel);
+
+        theModel.addObserver(frame);
+        theModel.addObserver(mainPanel);
     }
 }
