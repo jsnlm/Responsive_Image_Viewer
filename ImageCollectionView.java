@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -27,5 +28,20 @@ public class ImageCollectionView extends JPanel implements Observer {
             revalidate();
         }
 
+        for(ImageView img : imagesList){
+            img.changeLayout(model.getLayout());
+        }
+
+        if (model.getLayout() == ImageCollectionModel.LayoutType.LIST){
+            //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+            this.setLayout(new GridLayout(0, 1));
+
+            this.revalidate();
+        }
+        else if (model.getLayout() == ImageCollectionModel.LayoutType.GRID){
+            this.setLayout(new FlowLayout());
+            this.revalidate();
+        }
     }
 }

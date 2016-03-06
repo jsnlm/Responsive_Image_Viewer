@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -20,7 +22,7 @@ public class MainFrame extends JFrame implements Observer {
         p = new JPanel(new GridBagLayout());
         this.getContentPane().add(p);
 
-        this.setMinimumSize(new DimensionUIResource(300, 300));
+        this.setMinimumSize(new DimensionUIResource(700, 700));
 
         GridBagConstraints c = new GridBagConstraints();
 
@@ -40,7 +42,32 @@ public class MainFrame extends JFrame implements Observer {
 
         this.pack();
         this.setVisible(true);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+
+//                if (model.saveData()){
+//                    JOptionPane.showMessageDialog(this, "Model was saved successfuly");
+//                    return WindowConstants.EXIT_ON_CLOSE;
+//                }
+//                else{
+//                    JOptionPane.showMessageDialog(this, "Saving was UNsuccessful.\n\rPlease try again.");
+//                    return WindowConstants.DO_NOTHING_ON_CLOSE ;
+//                }
+
+
+                if (model.saveData())
+                {
+                    JOptionPane.showMessageDialog(MainFrame.this, "Model was saved successfuly");
+                    System.exit(0);
+                }
+                else{
+                    JOptionPane.showMessageDialog(MainFrame.this, "Saving was UNsuccessful.\n\rPlease try again.");
+                }
+            }
+        });
     }
 
     @Override

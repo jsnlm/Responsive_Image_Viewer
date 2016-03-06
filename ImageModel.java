@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.Serializable;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -6,7 +7,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.util.Observable;
 
-public class ImageModel extends Observable{
+public class ImageModel extends Observable implements Serializable {
 
     private File picFile;
     private int rating;
@@ -39,6 +40,8 @@ public class ImageModel extends Observable{
     public int getRating(){ return this.rating;}
     public void setRating(int x){
         this.rating = x;
+        setChanged();
+        notifyObservers();
     }
 
     public URL getURL(){
@@ -48,6 +51,5 @@ public class ImageModel extends Observable{
         catch (Exception e){
             return null;
         }
-
     }
 }
