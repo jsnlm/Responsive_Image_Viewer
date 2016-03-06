@@ -1,6 +1,8 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.DateFormat;
@@ -32,7 +34,9 @@ public class ImageView extends JPanel implements Observer {
         catch (Exception e){
             img = null;
         }
-        imagePart = new JLabel( new ImageIcon(getScaledImage(img, 200, 200)) );
+//        imagePart = new JLabel( new ImageIcon(Utilities.getScaledImage(img, 200, 200)) );
+        imagePart = new JLabel( new ImageIcon(Utilities.scaleWithAspectRatio(img, 200, 200)) );
+
         name = new JLabel("Name : " + m.getFileName());
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         createdDate = new JLabel("Date Created : " + df.format(m.getCreatedDate().toMillis()) );
@@ -45,6 +49,26 @@ public class ImageView extends JPanel implements Observer {
         this.add(name, BorderLayout.CENTER);
         this.add(createdDate, BorderLayout.CENTER);
         this.add(rating, BorderLayout.PAGE_END);
+
+        imagePart.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("mousePressed of Imageview was run");
+                new EnlargedImageFrame(model.getFile(), model.getFileName());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+
+            @Override
+            public void mouseExited(MouseEvent e) {}
+        });
     }
 
     @Override
@@ -64,17 +88,6 @@ public class ImageView extends JPanel implements Observer {
         }
     }
 
-    private Image getScaledImage(Image srcImg, int w, int h){
-        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, w, h, null);
-        g2.dispose();
-
-        return resizedImg;
-    }
-
     public void filterUpdated(Integer newFilterVal){
         Integer rating = model.getRating();
         if (newFilterVal == null){
@@ -91,4 +104,5 @@ public class ImageView extends JPanel implements Observer {
         }
 
     }
+
 }
