@@ -1,17 +1,23 @@
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
+
 
 public class Toolbar extends JPanel implements Observer {
 
     ImageCollectionModel model;
     JButton listButton;
     JButton gridButton;
+    JButton openButton;
     JLabel title;
     ToolbarFilter filter;
+
     public Toolbar(ImageCollectionModel m) {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -21,6 +27,7 @@ public class Toolbar extends JPanel implements Observer {
         listButton.setDisabledIcon(new ImageIcon(getClass().getResource("listIconDisabled.png")));
         gridButton = new JButton(new ImageIcon(getClass().getResource("gridIcon.png")));
         gridButton.setDisabledIcon(new ImageIcon(getClass().getResource("gridIconDisabled.png")));
+        openButton = new JButton(new ImageIcon(getClass().getResource("openIcon.png")));
         title = new JLabel("Fotag!");
 
         filter = new ToolbarFilter(this.model);
@@ -29,10 +36,27 @@ public class Toolbar extends JPanel implements Observer {
         this.add(listButton);
         this.add(gridButton);
         this.add(title);
+
         this.add(Box.createHorizontalGlue());
+        this.add(openButton);
         this.add(filter);
 
+        openButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter() );
+                fileChooser.setFileFilter(new FileNameExtensionFilter( "Images", ImageIO.getReaderFileSuffixes()));
+                int someVal = fileChooser.showDialog(openButton, "Choose file to Open");
 
+                if (someVal == JFileChooser.APPROVE_OPTION) {
+                    model.addPicture(fileChooser.getSelectedFile());
+                }
+                if (someVal == JFileChooser.CANCEL_OPTION) {
+                    System.out.println("No file was selected");
+                }
+            }
+        });
         listButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -58,4 +82,5 @@ public class Toolbar extends JPanel implements Observer {
             gridButton.setEnabled(true);
         }
     }
+
 }

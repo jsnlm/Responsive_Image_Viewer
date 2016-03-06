@@ -6,12 +6,10 @@ public class RatingView extends JPanel{
 
     JLabel stars[];
 
-    int lastClicked;
-    int lastHovered;
+//    int lastHovered;
 
     public RatingView(){
 
-//        this.setMaximumSize();
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         stars = new JLabel[5];

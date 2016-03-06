@@ -1,5 +1,53 @@
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.util.Observable;
 
 public class ImageModel extends Observable{
 
+    private File picFile;
+    private int rating;
+
+    public ImageModel(File picFile){
+        this.picFile = picFile;
+    }
+
+    public FileTime getCreatedDate(){
+        try{
+            BasicFileAttributes attr = Files.readAttributes(
+                    picFile.toPath(),
+                    BasicFileAttributes.class,
+                    LinkOption.NOFOLLOW_LINKS);
+            return attr.creationTime();
+        }
+        catch(Exception e){
+            System.out.println("ERROR" + e);
+            return null;
+        }
+    }
+
+    public String getFileName(){
+        return picFile.getName();
+    }
+    public File getFile(){
+        return picFile;
+    }
+
+    public int getRating(){ return this.rating;}
+    public void setRating(int x){
+        this.rating = x;
+    }
+
+    public URL getURL(){
+        try{
+            return this.picFile.toURL();
+        }
+        catch (Exception e){
+            return null;
+        }
+
+    }
 }

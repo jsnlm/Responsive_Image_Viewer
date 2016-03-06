@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -8,15 +9,16 @@ public class MainFrame extends JFrame implements Observer {
 
     ImageCollectionModel model;
     Toolbar toolbar;
-    JPanel mainPanel;
+    JPanel p;
+    ImageCollectionView mainPanel;
+
     public MainFrame(ImageCollectionModel m, Toolbar t){
         super("A3");
         this.model = m;
         this.toolbar = t;
 
-        mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBackground(new Color(200, 1, 1));
-        this.getContentPane().add(mainPanel);
+        p = new JPanel(new GridBagLayout());
+        this.getContentPane().add(p);
 
         this.setMinimumSize(new DimensionUIResource(300, 300));
 
@@ -26,13 +28,15 @@ public class MainFrame extends JFrame implements Observer {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridy = 0;
         c.weightx = 1.0;
-        mainPanel.add(t, c);
+        p.add(t, c);
 
+        mainPanel = new ImageCollectionView(m);
+        m.addObserver(mainPanel);
         c.fill = GridBagConstraints.BOTH;
         c.gridy = 1;
         c.weightx = 1;
         c.weighty = 1;
-        mainPanel.add(new JLabel("Some JComponent"), c);
+        p.add(mainPanel, c);
 
         this.pack();
         this.setVisible(true);

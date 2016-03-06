@@ -20,11 +20,7 @@ public class ToolbarFilter extends RatingView implements Observer {
     public void update(Observable o, Object arg) {
         int newFilterNum = model.getFilter();
         for (int i = 0; i < stars.length; i++){
-            if (i <= newFilterNum){
-                stars[i].setEnabled(true);
-            }else{
-                stars[i].setEnabled(false);
-            }
+                stars[i].setEnabled(i <= newFilterNum);
         }
     }
 
@@ -40,8 +36,6 @@ public class ToolbarFilter extends RatingView implements Observer {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            System.out.println("starNumber : " + starNumber);
-            lastClicked = starNumber;
             model.setFilter(starNumber);
         }
 
