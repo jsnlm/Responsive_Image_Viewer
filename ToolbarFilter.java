@@ -18,15 +18,12 @@ public class ToolbarFilter extends RatingView implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        int newFilterNum = model.getFilter();
-        for (int i = 0; i < stars.length; i++){
-                stars[i].setEnabled(i <= newFilterNum);
-        }
+        redraw(model.getFilter());
     }
 
     public class starMouseListener implements MouseListener{
 
-        int starNumber;
+        Integer starNumber;
         public starMouseListener(int i){
             starNumber = i;
         }
@@ -36,7 +33,10 @@ public class ToolbarFilter extends RatingView implements Observer {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            model.setFilter(starNumber);
+            if (starNumber == model.getFilter())
+                model.setFilter(null);
+            else
+                model.setFilter(starNumber);
         }
 
         @Override

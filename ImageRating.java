@@ -16,15 +16,12 @@ public class ImageRating extends RatingView implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        int newFilterNum = model.getRating();
-        for (int i = 0; i < stars.length; i++){
-            stars[i].setEnabled(i <= newFilterNum);
-        }
+        redraw(model.getRating());
     }
 
     public class starMouseListener implements MouseListener {
 
-        int starNumber;
+        Integer starNumber;
         public starMouseListener(int i){
             starNumber = i;
         }
@@ -34,7 +31,10 @@ public class ImageRating extends RatingView implements Observer {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            model.setRating(starNumber);
+            if (starNumber == model.getRating())
+                model.setRating(null);
+            else
+                model.setRating(starNumber);
         }
 
         @Override

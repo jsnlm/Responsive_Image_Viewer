@@ -21,5 +21,15 @@ public class RatingView extends JPanel{
         //stars[0].addMouseListener(new MouseListener() );
     }
 
+    public void redraw(Integer numStars){
+        if (numStars == null){
+            for (int i = 0; i < stars.length; i++)
+                stars[i].setEnabled(false);
+        }
+        else{
+            for (int i = 0; i < stars.length; i++)
+                stars[i].setEnabled(i <= numStars);
+        }
+    }
 
 }

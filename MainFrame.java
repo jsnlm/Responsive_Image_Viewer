@@ -47,17 +47,6 @@ public class MainFrame extends JFrame implements Observer {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-
-//                if (model.saveData()){
-//                    JOptionPane.showMessageDialog(this, "Model was saved successfuly");
-//                    return WindowConstants.EXIT_ON_CLOSE;
-//                }
-//                else{
-//                    JOptionPane.showMessageDialog(this, "Saving was UNsuccessful.\n\rPlease try again.");
-//                    return WindowConstants.DO_NOTHING_ON_CLOSE ;
-//                }
-
-
                 if (model.saveData())
                 {
                     JOptionPane.showMessageDialog(MainFrame.this, "Model was saved successfuly");

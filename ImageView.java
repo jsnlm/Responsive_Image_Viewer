@@ -52,10 +52,6 @@ public class ImageView extends JPanel implements Observer {
 
     }
 
-//    public void filterUpdateAction(int newFilter){
-//        if
-//    }
-
     public void changeLayout(ImageCollectionModel.LayoutType newLayout){
         if (newLayout == ImageCollectionModel.LayoutType.LIST){
 

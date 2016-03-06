@@ -10,7 +10,7 @@ import java.util.Observable;
 public class ImageModel extends Observable implements Serializable {
 
     private File picFile;
-    private int rating;
+    private Integer rating;
 
     public ImageModel(File picFile){
         this.picFile = picFile;
@@ -37,8 +37,8 @@ public class ImageModel extends Observable implements Serializable {
         return picFile;
     }
 
-    public int getRating(){ return this.rating;}
-    public void setRating(int x){
+    public Integer getRating(){ return this.rating;}
+    public void setRating(Integer x){
         this.rating = x;
         setChanged();
         notifyObservers();

@@ -7,7 +7,7 @@ public class ImageCollectionModel extends Observable implements Serializable {
     public enum LayoutType{ LIST, GRID }
 
     LayoutType currLayout;
-    int filter;
+    Integer filter;
     ArrayList<ImageModel> imageList;
     ImageModel unaddedImage;
 
@@ -19,8 +19,8 @@ public class ImageCollectionModel extends Observable implements Serializable {
         setChanged();
     }
 
-    public int getFilter(){ return this.filter;}
-    public void setFilter(int x){
+    public Integer getFilter(){ return this.filter;}
+    public void setFilter(Integer x){
         this.filter = x;
         setChangedAndNotify();
     }

@@ -9,6 +9,7 @@ public class Main {
         theModel.addObserver(toolbar);
         theModel.addObserver(frame);
 
+        theModel.loadUnloadedPics();
         theModel.notifyObservers();
     }
 }
