@@ -14,6 +14,7 @@ public class ImageModel extends Observable implements Serializable {
 
     public ImageModel(File picFile){
         this.picFile = picFile;
+        this.setChanged();
     }
 
     public FileTime getCreatedDate(){

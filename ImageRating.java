@@ -31,10 +31,18 @@ public class ImageRating extends RatingView implements Observer {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            if (starNumber == model.getRating())
-                model.setRating(null);
-            else
-                model.setRating(starNumber);
+            if (model.getRating() == null){
+                if (starNumber == null)
+                    model.setRating(null);
+                else
+                    model.setRating(starNumber);
+            }
+            else{
+                if (model.getRating().equals(starNumber))
+                    model.setRating(null);
+                else
+                    model.setRating(starNumber);
+            }
         }
 
         @Override

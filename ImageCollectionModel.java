@@ -31,9 +31,15 @@ public class ImageCollectionModel extends Observable implements Serializable {
         setChangedAndNotify();
     }
 
+
     public void loadUnloadedPics(){
         for(int i = 0; i < imageList.size(); i++){
-            displayImageModel(imageList.get(i));
+            ImageModel curr = imageList.get(i);
+            displayImageModel(curr);
+            //Hacky way to call setChanged() property.
+            //SetChanged() should be called in constructor but this was loaded from serialized data.
+            curr.setRating(curr.getRating());
+            curr.notifyObservers();
         }
     }
     public void addPicture(File input){
@@ -42,6 +48,7 @@ public class ImageCollectionModel extends Observable implements Serializable {
     }
 
     public void addPicture(ImageModel addedPic){
+        filter = null;
         imageList.add(addedPic);
         displayImageModel(addedPic);
     }
@@ -51,6 +58,7 @@ public class ImageCollectionModel extends Observable implements Serializable {
         setChangedAndNotify();
         unaddedImage = null;
     }
+
 
     private void setChangedAndNotify(){
         setChanged();

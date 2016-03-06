@@ -22,6 +22,7 @@ public class ImageCollectionView extends JPanel implements Observer {
             System.out.println("new image was added");
             ImageView newImageView = new ImageView(newImageModel);
             newImageModel.addObserver(newImageView);
+            newImageModel.notifyObservers();
 
             imagesList.add(newImageView);
             this.add(newImageView);
@@ -42,6 +43,10 @@ public class ImageCollectionView extends JPanel implements Observer {
         else if (model.getLayout() == ImageCollectionModel.LayoutType.GRID){
             this.setLayout(new FlowLayout());
             this.revalidate();
+        }
+
+        for (int i = 0; i < imagesList.size(); i++){
+            imagesList.get(i).filterUpdated(model.getFilter());
         }
     }
 }

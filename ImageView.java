@@ -49,7 +49,7 @@ public class ImageView extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-
+        System.out.println("ImageView updated() was run");
     }
 
     public void changeLayout(ImageCollectionModel.LayoutType newLayout){
@@ -73,5 +73,22 @@ public class ImageView extends JPanel implements Observer {
         g2.dispose();
 
         return resizedImg;
+    }
+
+    public void filterUpdated(Integer newFilterVal){
+        Integer rating = model.getRating();
+        if (newFilterVal == null){
+            this.setVisible(true);
+        }
+        else if (rating == null){
+            this.setVisible(false);
+        }
+        else if(rating < newFilterVal){
+            this.setVisible(false);
+        }
+        else{
+            this.setVisible(true);
+        }
+
     }
 }
