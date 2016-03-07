@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,6 +17,7 @@ public class Toolbar extends JPanel implements Observer {
     JButton gridButton;
     JButton openButton;
     JLabel title;
+    JLabel filterLabel;
     ToolbarFilter filter;
 
     public Toolbar(ImageCollectionModel m) {
@@ -29,7 +31,9 @@ public class Toolbar extends JPanel implements Observer {
         gridButton.setDisabledIcon(new ImageIcon(getClass().getResource("gridIconDisabled.png")));
         openButton = new JButton(new ImageIcon(getClass().getResource("openIcon.png")));
         title = new JLabel("Fotag!");
-
+        Font f = title.getFont();
+        title.setFont(new Font(f.getName(), f.getStyle(), 30));
+        filterLabel = new JLabel("Filter by:");
         filter = new ToolbarFilter(this.model);
         model.addObserver(filter);
 
@@ -39,6 +43,7 @@ public class Toolbar extends JPanel implements Observer {
 
         this.add(Box.createHorizontalGlue());
         this.add(openButton);
+        this.add(filterLabel);
         this.add(filter);
 
         openButton.addActionListener(new ActionListener() {
