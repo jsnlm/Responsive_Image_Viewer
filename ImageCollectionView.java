@@ -29,10 +29,6 @@ public class ImageCollectionView extends JPanel implements Observer {
             revalidate();
         }
 
-        for(ImageView img : imagesList){
-            img.changeLayout(model.getLayout());
-        }
-
         if (model.getLayout() == ImageCollectionModel.LayoutType.LIST){
             //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -45,8 +41,9 @@ public class ImageCollectionView extends JPanel implements Observer {
             this.revalidate();
         }
 
-        for (int i = 0; i < imagesList.size(); i++){
-            imagesList.get(i).filterUpdated(model.getFilter());
+        for(ImageView img : imagesList){
+            img.changeLayout(model.getLayout());
+            img.filterUpdated(model.getFilter());
         }
     }
 }

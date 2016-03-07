@@ -16,17 +16,21 @@ public class ImageView extends JPanel implements Observer {
     ImageModel model;
     ImageRating rating;
     JLabel imagePart, name, createdDate;
+    LayoutManager listLayout, gridLayout;
+
     public ImageView(ImageModel m) {
         this.model = m;
-
         rating = new ImageRating(m);
         m.addObserver(rating);
-        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
+        listLayout = new BoxLayout(this, BoxLayout.X_AXIS);
+        gridLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+        this.setLayout(listLayout);
 //        this.setLayout(new BorderLayout());
         Random r = new Random();
         this.setBackground(new Color(r.nextInt(250), r.nextInt(250), r.nextInt(250)));
 
-        this.setPreferredSize(new Dimension(200, 250));
+//        this.setPreferredSize(new Dimension(200, 250));
         Image img;
         try{
             img = ImageIO.read(m.getFile());
@@ -45,10 +49,14 @@ public class ImageView extends JPanel implements Observer {
         name.setAlignmentX(LEFT_ALIGNMENT);
         rating.setAlignmentX(LEFT_ALIGNMENT);
 
+        JPanel notPictureContent = new JPanel();
+        notPictureContent.setLayout(new BoxLayout(notPictureContent, BoxLayout.Y_AXIS));
+        notPictureContent.add(name);
+        notPictureContent.add(createdDate);
+        notPictureContent.add(rating);
+
         this.add(imagePart, BorderLayout.PAGE_START);
-        this.add(name, BorderLayout.CENTER);
-        this.add(createdDate, BorderLayout.CENTER);
-        this.add(rating, BorderLayout.PAGE_END);
+        this.add(notPictureContent, BorderLayout.PAGE_START);
 
         imagePart.addMouseListener(new MouseListener() {
             @Override
@@ -77,15 +85,18 @@ public class ImageView extends JPanel implements Observer {
     }
 
     public void changeLayout(ImageCollectionModel.LayoutType newLayout){
+        System.out.println("ImageView changeLayout() was run");
         if (newLayout == ImageCollectionModel.LayoutType.LIST){
-
+            this.setLayout(listLayout);
         }
         else if (newLayout == ImageCollectionModel.LayoutType.GRID){
-
+            this.setLayout(gridLayout);
         }
         else{
             System.out.println("model.Layout is set to something weird");
         }
+        repaint();
+        revalidate();
     }
 
     public void filterUpdated(Integer newFilterVal){
@@ -102,7 +113,8 @@ public class ImageView extends JPanel implements Observer {
         else{
             this.setVisible(true);
         }
-
+        repaint();
+        revalidate();
     }
 
 }

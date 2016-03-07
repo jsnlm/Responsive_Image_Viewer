@@ -23,6 +23,7 @@ public class ImageModel extends Observable implements Serializable {
                     picFile.toPath(),
                     BasicFileAttributes.class,
                     LinkOption.NOFOLLOW_LINKS);
+
             return attr.creationTime();
         }
         catch(Exception e){
@@ -38,7 +39,9 @@ public class ImageModel extends Observable implements Serializable {
         return picFile;
     }
 
-    public Integer getRating(){ return this.rating;}
+    public Integer getRating(){
+        return this.rating;
+    }
     public void setRating(Integer x){
         this.rating = x;
         setChanged();

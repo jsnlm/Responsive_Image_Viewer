@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -43,7 +44,15 @@ public class ImageCollectionModel extends Observable implements Serializable {
         }
     }
     public void addPicture(File input){
-        System.out.println("addPicture was run");
+        //Scan image models to see if image already exists
+        for(ImageModel i: imageList){
+            String A = i.getFile().getPath();
+            String B = input.getPath();
+            if (i.getFile().getPath().equals(input.getPath())){
+                JOptionPane.showMessageDialog(null, "Selected image is already in Fotag");
+                return;
+            }
+        }
         addPicture( new ImageModel(input) );
     }
 

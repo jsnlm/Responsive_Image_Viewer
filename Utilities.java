@@ -15,9 +15,9 @@ public class Utilities {
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         if ( ((float)srcH)/srcW < ((float)h)/w)
-            g2.drawImage(srcImg, 0, 0, w, srcH*w/srcW, null);
+            g2.drawImage(srcImg, 0, (h - srcH*w/srcW)/2, w, srcH*w/srcW, null);
         else
-            g2.drawImage(srcImg, 0, 0, srcW*h/srcH, h, null);
+            g2.drawImage(srcImg, (w - srcW*h/srcH)/2, 0, srcW*h/srcH, h, null);
         g2.dispose();
         return resizedImg;
 
