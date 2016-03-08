@@ -37,6 +37,7 @@ public class MainFrame extends JFrame implements Observer, ComponentListener {
 
         mainPanel = new ImageCollectionView(m);
         m.addObserver(mainPanel);
+//        mainPanel.addListener(this::fixTheSize);
 
         mainPanelContainer = new JScrollPane(mainPanel,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -88,6 +89,18 @@ public class MainFrame extends JFrame implements Observer, ComponentListener {
 //            mainPanel.setMinimumSize(this.getSize());
             int w = (int)mainPanelContainer.getSize().getWidth();
             int h = 100000;
+
+
+
+            int numVisible = 0;
+            for(ImageView img : mainPanel.imagesList){
+                boolean ajfeigr = img.isShowing();
+                if (ajfeigr){
+                    numVisible++ ;
+                }
+            }
+            System.out.println("numVisible : " + numVisible);
+
 
             h = w/ImageView.viewW;
             h = (int)Math.ceil(mainPanel.imagesList.size()/(float)h);

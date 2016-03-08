@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.EventListener;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Random;
 
 interface RatingListener extends EventListener {
     void onRating(ImageView v);
@@ -39,9 +38,6 @@ public class ImageView extends JPanel implements Observer {
         listLayout = new BoxLayout(this, BoxLayout.X_AXIS);
         gridLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(listLayout);
-//        this.setLayout(new BorderLayout());
-        Random r = new Random();
-        this.setBackground(new Color(r.nextInt(250), r.nextInt(250), r.nextInt(250)));
 
 //        this.setPreferredSize(new Dimension(200, 250));
         Image img;
