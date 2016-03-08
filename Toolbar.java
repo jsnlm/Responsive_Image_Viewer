@@ -50,12 +50,18 @@ public class Toolbar extends JPanel implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setMultiSelectionEnabled(true);
+
                 fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter() );
                 fileChooser.setFileFilter(new FileNameExtensionFilter( "Images", ImageIO.getReaderFileSuffixes()));
+
                 int someVal = fileChooser.showDialog(openButton, "Choose file to Open");
 
                 if (someVal == JFileChooser.APPROVE_OPTION) {
-                    model.addPicture(fileChooser.getSelectedFile());
+                    File chosenFiles[] = fileChooser.getSelectedFiles();
+                    for(File f : chosenFiles){
+                        model.addPicture(f);
+                    }
                 }
                 if (someVal == JFileChooser.CANCEL_OPTION) {
                     System.out.println("No file was selected");
