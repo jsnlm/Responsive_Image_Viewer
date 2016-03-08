@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -7,9 +8,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.EventListener;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
+
+interface RatingListener extends EventListener {
+    void onRating(ImageView v);
+}
 
 public class ImageView extends JPanel implements Observer {
 
@@ -18,10 +24,17 @@ public class ImageView extends JPanel implements Observer {
     JLabel imagePart, name, createdDate;
     LayoutManager listLayout, gridLayout;
 
+    EventListenerList listeners;
+
+    static int viewW = 200;
+    static int viewH = 271;
+
     public ImageView(ImageModel m) {
         this.model = m;
         rating = new ImageRating(m);
         m.addObserver(rating);
+
+        listeners = new EventListenerList();
 
         listLayout = new BoxLayout(this, BoxLayout.X_AXIS);
         gridLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -39,7 +52,7 @@ public class ImageView extends JPanel implements Observer {
             img = null;
         }
 //        imagePart = new JLabel( new ImageIcon(Utilities.getScaledImage(img, 200, 200)) );
-        imagePart = new JLabel( new ImageIcon(Utilities.scaleWithAspectRatio(img, 200, 200)) );
+        imagePart = new JLabel( new ImageIcon(Utilities.scaleWithAspectRatio(img, viewW, 200)) );
 
         name = new JLabel("Name : " + m.getFileName());
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -82,15 +95,26 @@ public class ImageView extends JPanel implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         System.out.println("ImageView updated() was run");
+        for (RatingListener l : listeners.getListeners(RatingListener.class)) {
+            l.onRating(this);
+        }
     }
 
     public void changeLayout(ImageCollectionModel.LayoutType newLayout){
-        System.out.println("ImageView changeLayout() was run");
         if (newLayout == ImageCollectionModel.LayoutType.LIST){
+//            System.out.println("ImageView -> list");
             this.setLayout(listLayout);
+            this.setMaximumSize(new Dimension(100000, 200));
         }
         else if (newLayout == ImageCollectionModel.LayoutType.GRID){
+//            System.out.println("ImageView -> grid");
             this.setLayout(gridLayout);
+
+//            ImageView.viewW = this.getWidth();
+//            ImageView.viewH = this.getHeight();
+//            System.out.println("ImageView.viewH : " + ImageView.viewH);
+//            System.out.println("ImageView.viewW : " + ImageView.viewW);
+//            this.setPreferredSize(new Dimension(200, 250));
         }
         else{
             System.out.println("model.Layout is set to something weird");
@@ -115,6 +139,10 @@ public class ImageView extends JPanel implements Observer {
         }
         repaint();
         revalidate();
+    }
+
+    public void addRatingListener(RatingListener l) {
+        listeners.add(RatingListener.class, l);
     }
 
 }

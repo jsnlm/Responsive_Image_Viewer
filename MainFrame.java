@@ -1,18 +1,21 @@
 import javax.swing.*;
 import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public class MainFrame extends JFrame implements Observer {
+public class MainFrame extends JFrame implements Observer, ComponentListener {
 
     ImageCollectionModel model;
     Toolbar toolbar;
     JPanel p;
     ImageCollectionView mainPanel;
+    JScrollPane mainPanelContainer;
 
     public MainFrame(ImageCollectionModel m, Toolbar t){
         super("A3");
@@ -34,14 +37,21 @@ public class MainFrame extends JFrame implements Observer {
 
         mainPanel = new ImageCollectionView(m);
         m.addObserver(mainPanel);
+
+        mainPanelContainer = new JScrollPane(mainPanel,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        mainPanelContainer.getVerticalScrollBar().setUnitIncrement(10);
         c.fill = GridBagConstraints.BOTH;
         c.gridy = 1;
         c.weightx = 1;
         c.weighty = 1;
-        p.add(mainPanel, c);
+        p.add(mainPanelContainer, c);
 
         this.pack();
         this.setVisible(true);
+
+        this.addComponentListener(this);
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -61,6 +71,51 @@ public class MainFrame extends JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-
+        System.out.println("MainFrame update()");
+        fixTheSize();
     }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        System.out.println("Frame was resized");
+        fixTheSize();
+    }
+
+    public void fixTheSize(){
+        if (model.getLayout() == ImageCollectionModel.LayoutType.GRID){
+//            mainPanel.setPreferredSize(this.getSize());
+//            mainPanel.setMaximumSize(this.getSize());
+//            mainPanel.setMinimumSize(this.getSize());
+            int w = (int)mainPanelContainer.getSize().getWidth();
+            int h = 100000;
+
+            h = w/ImageView.viewW;
+            h = (int)Math.ceil(mainPanel.imagesList.size()/(float)h);
+            h = h * ImageView.viewH;
+//
+//            System.out.println("h : " + h);
+////            h = mainPanel.imagesList.size()/(w/ImageView.viewW) * ImageView.viewH;
+
+//            FlowLayout egth = (FlowLayout)mainPanel.getLayout();
+            mainPanel.setMaximumSize(new Dimension(w, h));
+            mainPanel.setPreferredSize(new Dimension(w, h));
+        }
+        else{
+            mainPanel.setPreferredSize(null);
+            mainPanel.setMaximumSize(null);
+            mainPanel.setMinimumSize(null);
+        }
+        mainPanelContainer.revalidate();
+        mainPanel.revalidate();
+        revalidate();
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {}
+
+    @Override
+    public void componentShown(ComponentEvent e) {}
+
+    @Override
+    public void componentHidden(ComponentEvent e) {}
 }

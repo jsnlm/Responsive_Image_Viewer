@@ -57,7 +57,7 @@ public class ImageCollectionModel extends Observable implements Serializable {
     }
 
     public void addPicture(ImageModel addedPic){
-        filter = null;
+//        filter = null;
         imageList.add(addedPic);
         displayImageModel(addedPic);
     }
