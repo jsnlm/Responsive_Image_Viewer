@@ -11,7 +11,6 @@ public class ImageCollectionView extends JPanel implements Observer {
     public ImageCollectionView(ImageCollectionModel m){
         super();
         this.model = m;
-        this.setBackground(new Color(100, 100, 255));
         imagesList = new ArrayList<ImageView>();
     }
 
